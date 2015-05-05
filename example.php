@@ -4,8 +4,9 @@
  * License: GNU GPLv2
  */
 
-require 'class.iCalReader.php';
+use iCal\iCal;
 
+require 'iCal/iCal.php';
 $cal = new iCal('ical.ics');
 
 $cal->sortEvents();

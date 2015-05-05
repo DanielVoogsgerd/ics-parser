@@ -1,26 +1,22 @@
-<?php
+<?php namespace iCal;
 /**
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
  */
 
-class iCalEvent {
-
+class iCalEvent extends iCalComponent {
 	private $start;
 	private $end;
 	private $summary;
 	private $location;
 
-	private $extraOptions;
-
-
-	public function __construct($summary = null, DateTimeImmutable $start = null, DateTimeImmutable $end = null, $location = null, $extraOptions = array()) {
+	public function __construct($summary = null, \DateTimeImmutable $start = null, \DateTimeImmutable $end = null, $location = null, $extraProperties = array()) {
 		$this->summary = $summary;
 		$this->start = $start;
 		$this->end = $end;
 		$this->location = $location;
 
-		$this->extraOptions = $extraOptions;
+		parent::__construct($extraProperties);
 	}
 
 	public function getSummary() {
@@ -35,7 +31,7 @@ class iCalEvent {
 		return $this->start;
 	}
 
-	public function setStart(DateTimeImmutable $start) {
+	public function setStart(\DateTimeImmutable $start) {
 		$this->start = $start;
 	}
 
@@ -43,7 +39,7 @@ class iCalEvent {
 		return $this->end;
 	}
 
-	public function setEnd(DateTimeImmutable $end) {
+	public function setEnd(\DateTimeImmutable $end) {
 		$this->end = $end;
 	}
 
@@ -55,26 +51,14 @@ class iCalEvent {
 		$this->location = $location;
 	}
 
-	public function setOption($key, $value) {
-		$this->extraOptions[$key] = $value;
-	}
-
-	public function appendOption($key, $value) {
-		$this->extraOptions[$key] .= $value;
-	}
-
-	public function getOption($key) {
-		return isset($this->extraOptions[$key]) ? $this->extraOptions[$key] : null;
-	}
-
-	public function isOngoing(DateTime $time = null) {
+	public function isOngoing(\DateTime $time = null) {
 		if ($time === null)
 			$time = new DateTime('Now');
 
 		return $this->getStart() <= $time && $this->getEnd() >= $time;
 	}
 
-	public function startsWithin(DateInterval $startsWithin, DateTime $time = null) {
+	public function startsWithin(\DateInterval $startsWithin, \DateTime $time = null) {
 		if ($time === null)
 			$time = new DateTime('Now');
 

@@ -1,16 +1,18 @@
-<?php
+<?php namespace iCal;
 /**
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
  */
 
-require 'class.iCalEvent.php';
-require 'class.iCalTodo.php';
+require 'iCalComponent.php';
+require 'iCalEvent.php';
+require 'iCalTodo.php';
+
 class iCal {
 	private $events = array();
 	private $todos = array();
 
-	private $attributes = array();
+	private $properties = array();
 
 
 	public function __construct($filename) {
@@ -35,7 +37,7 @@ class iCal {
 						return false;
 
 					if (isset($current))
-						$current->appendOption($keyword, $line);
+						$current->appendProperty($keyword, $line);
 
 					continue;
 				}
@@ -115,7 +117,7 @@ class iCal {
 						}
 					default:
 						if (isset($current))
-							$current->setOption($keyword, $value);
+							$current->setProperty($keyword, $value);
 						break;
 				}
 			}
@@ -145,13 +147,13 @@ class iCal {
 			return false;
 		}
 
-		if ($date[7] !== "Z" && is_null($timezone) && $this->getOption('TZID')) {
+		if ($date[7] !== "Z" && is_null($timezone) && $this->getProperty('TZID')) {
 			trigger_error('No timezone was supplied');
 
 			return false;
 		}
 
-		return DateTimeImmutable::createFromFormat('Ymd\THis', $icalDate, new DateTimeZone($timezone));
+		return \DateTimeImmutable::createFromFormat('Ymd\THis', $icalDate, new \DateTimeZone($timezone));
 	}
 
 	public function todos() {
@@ -179,7 +181,7 @@ class iCal {
 		return count($this->events);
 	}
 
-	public function eventsFromRange(DateTime $rangeStart = null, DateTime $rangeEnd = null) {
+	public function eventsFromRange(\DateTime $rangeStart = null, \DateTime $rangeEnd = null) {
 		return array_filter($this->events(), function ($event) use ($rangeStart, $rangeEnd) {
 			return ($rangeStart === null || $rangeStart <= $event->getStart()) &&
 			($rangeEnd === null || $rangeEnd >= $event->getStart());
@@ -198,25 +200,25 @@ class iCal {
 		});
 	}
 
-	public function setOption($key, $value) {
-		$this->attributes[$key] = $value;
+	public function setProperty($key, $value) {
+		$this->properties[$key] = $value;
 	}
 
-	public function appendOption($key, $value) {
-		$this->attributes[$key] .= $value;
+	public function appendProperty($key, $value) {
+		$this->properties[$key] .= $value;
 	}
 
-	public function getOption($key) {
-		return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+	public function getProperty($key) {
+		return isset($this->properties[$key]) ? $this->properties[$key] : null;
 	}
 
-	public function isOngoing(DateTime $time = null) {
+	public function isOngoing(\DateTime $time = null) {
 		return array_filter($this->events(), function($event) use($time) {
 			return $event->isOngoing($time);
 		});
 	}
 
-	public function startsWithin(DateInterval $startsWithin, DateTime $time = null) {
+	public function startsWithin(DateInterval $startsWithin, \DateTime $time = null) {
 		return array_filter($this->events(), function($event) use($startsWithin, $time) {
 			return $event->startsWithin($startsWithin, $time);
 		});

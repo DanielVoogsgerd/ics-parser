@@ -1,26 +1,22 @@
-<?php
+<?php namespace iCal;
 /**
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
  */
 
-class iCalTodo {
-
+class iCalTodo extends iCalComponent {
 	private $summary;
 	private $start;
 	private $due;
 	private $location;
 
-	private $extraOptions;
-
-
-	public function __construct($summary = null, DateTimeImmutable $start = null, DateTimeImmutable $due = null, $location = null, $extraOptions = array()) {
+	public function __construct($summary = null, \DateTimeImmutable $start = null, \DateTimeImmutable $due = null, $location = null, $extraProperties = array()) {
 		$this->summary = $summary;
 		$this->start = $start;
 		$this->due = $due;
 		$this->location = $location;
 
-		$this->extraOptions = $extraOptions;
+		$this->extraProperties = $extraProperties;
 	}
 
 	public function getSummary() {
@@ -35,7 +31,7 @@ class iCalTodo {
 		return $this->start;
 	}
 
-	public function setStart(DateTimeImmutable $start) {
+	public function setStart(\DateTimeImmutable $start) {
 		$this->start = $start;
 	}
 
@@ -43,7 +39,7 @@ class iCalTodo {
 		return $this->due;
 	}
 
-	public function setDue(DateTimeImmutable $due) {
+	public function setDue(\DateTimeImmutable $due) {
 		$this->due = $due;
 	}
 
@@ -64,28 +60,16 @@ class iCalTodo {
 		$this->location = $location;
 	}
 
-	public function setOption($key, $value) {
-		$this->extraOptions[$key] = $value;
-	}
-
-	public function appendOption($key, $value) {
-		$this->extraOptions[$key] .= $value;
-	}
-
-	public function getOption($key) {
-		return isset($this->extraOptions[$key]) ? $this->extraOptions[$key] : null;
-	}
-
-	public function isOngoing(DateTime $time = null) {
+	public function isOngoing(\DateTime $time = null) {
 		if ($time === null)
-			$time = new DateTime('Now');
+			$time = new \DateTime('Now');
 
 		return $this->getStart() <= $time && $this->getDue() >= $time;
 	}
 
-	public function startsWithin(DateInterval $startsWithin, DateTime $time = null) {
+	public function startsWithin(\DateInterval $startsWithin, \DateTime $time = null) {
 		if ($time === null)
-			$time = new DateTime('Now');
+			$time = new \DateTime('Now');
 
 		return $this->getStart()->sub($startsWithin) <= $time && $this->getStart() <= $time;
 	}
