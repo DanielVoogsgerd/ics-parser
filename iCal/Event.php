@@ -51,14 +51,14 @@ class Event extends Component {
 		$this->location = $location;
 	}
 
-	public function isOngoing(\DateTime $time = null) {
+	public function isOngoing(\DateTimeInterface $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');
 
 		return $this->getStart() <= $time && $this->getEnd() >= $time;
 	}
 
-	public function isStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
+	public function isStartingWithin(\DateInterval $startsWithin, \DateTimeInterface $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');
 

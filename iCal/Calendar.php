@@ -23,7 +23,7 @@ class Calendar extends Component {
 		$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 		if (stristr($lines[0], 'BEGIN:VCALENDAR') === false)
-			throw new \Exception('Content doensn\'t look like iCal to me');
+			throw new \UnexpectedValueException('Content doensn\'t look like iCal to me');
 
 		foreach ($lines as $rawline) {
 			foreach (explode('\n', $rawline) as $line) {
@@ -61,7 +61,7 @@ class Calendar extends Component {
 								break;
 							case "DAYLIGHT":
 							case "STANDARD":
-								//Recusive behaviour
+								//Recursive behaviour
 								unset($current);
 
 								break;
@@ -151,7 +151,7 @@ class Calendar extends Component {
 		$pattern .= '(Z?)/';         // 7: Timezone
 
 		if (!preg_match($pattern, $icalDate, $date)) {
-			throw new \InvalidArgumentException('Date supplied is not a valid ical date');
+			throw new \UnexpectedValueException('Date supplied is not a valid ical date');
 		}
 
 		if ($date[7] !== "Z" && is_null($timezone) && $this->getProperty('TZID')) {
@@ -186,7 +186,7 @@ class Calendar extends Component {
 		return count($this->getEvents());
 	}
 
-	public function getEventsFromRange(\DateTime $rangeStart = null, \DateTime $rangeEnd = null) {
+	public function getEventsFromRange(\DateTimeInterface $rangeStart = null, \DateTimeInterface $rangeEnd = null) {
 		return array_filter($this->getEvents(), function (Event $event) use ($rangeStart, $rangeEnd) {
 			return ($rangeStart === null || $rangeStart <= $event->getStart()) &&
 			       ($rangeEnd === null || $rangeEnd >= $event->getStart());
@@ -205,13 +205,13 @@ class Calendar extends Component {
 		});
 	}
 
-	public function getOngoingEvents(\DateTime $time = null) {
+	public function getOngoingEvents(\DateTimeInterface $time = null) {
 		return array_filter($this->getEvents(), function (Event $event) use ($time) {
 			return $event->isOngoing($time);
 		});
 	}
 
-	public function getEventsStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
+	public function getEventsStartingWithin(\DateInterval $startsWithin, \DateTimeInterface $time = null) {
 		return array_filter($this->getEvents(), function (Event $event) use ($startsWithin, $time) {
 			return $event->isStartingWithin($startsWithin, $time);
 		});

@@ -8,7 +8,7 @@ abstract class Component {
 	protected $extraProperties;
 
 	protected function __construct($extraProperties) {
-		$this->extraProperties;
+		$this->extraProperties = $extraProperties;
 	}
 
 	public function setProperty($key, $value) {

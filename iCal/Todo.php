@@ -60,14 +60,14 @@ class Todo extends Component {
 		$this->location = $location;
 	}
 
-	public function isOngoing(\DateTime $time = null) {
+	public function isOngoing(\DateTimeInterface $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');
 
 		return $this->getStart() <= $time && $this->getDue() >= $time;
 	}
 
-	public function isStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
+	public function isStartingWithin(\DateInterval $startsWithin, \DateTimeInterface $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');
 
