@@ -1,4 +1,4 @@
-# ICal ICS-parser
+# iCal ICS-parser
 - Author: Daniel Voogsgerd
 - License: GNU GPLv2
 

@@ -6,7 +6,7 @@
 
 require 'class.iCalEvent.php';
 require 'class.iCalTodo.php';
-class ICal {
+class iCal {
 	private $events = array();
 	private $todos = array();
 
@@ -23,7 +23,7 @@ class ICal {
 		$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 		if (stristr($lines[0], 'BEGIN:VCALENDAR') === false)
-			throw new Exception('Content doensn\'t look like ICal to me');
+			throw new Exception('Content doensn\'t look like iCal to me');
 
 		foreach ($lines as $rawline) {
 			foreach (explode('\n', $rawline) as $line) {
