@@ -1,4 +1,5 @@
 <?php namespace iCal;
+
 /**
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
@@ -16,7 +17,7 @@ class Calendar extends Component {
 		if (!$filename)
 			throw new InvalidArgumentException('No filename provided');
 
-		if(!file_exists($filename))
+		if (!file_exists($filename))
 			throw new InvalidArgumentException('Provided file doensn\'t exist');
 
 		$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -28,13 +29,13 @@ class Calendar extends Component {
 			foreach (explode('\n', $rawline) as $line) {
 				$lineSegments = $this->parseLine($line);
 
-				if(is_array($lineSegments))
+				if (is_array($lineSegments))
 					list($keyword, $attributes, $value) = $lineSegments;
 				else {
 					if (!isset($keyword))
 						return false;
 
-					if(isset($current))
+					if (isset($current))
 						$current->appendProperty($keyword, $lineSegments);
 
 					continue;
@@ -129,7 +130,7 @@ class Calendar extends Component {
 		$keyword = trim($keyword);
 		$value = trim($value);
 
-		return [ $keyword, $attributes, $value ];
+		return [$keyword, $attributes, $value];
 	}
 
 	private function keyValueFromString($text) {
@@ -209,13 +210,13 @@ class Calendar extends Component {
 	}
 
 	public function getOngoingEvents(\DateTime $time = null) {
-		return array_filter($this->getEvents(), function($event) use($time) {
+		return array_filter($this->getEvents(), function ($event) use ($time) {
 			return $event->isOngoing($time);
 		});
 	}
 
 	public function getEventsStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
-		return array_filter($this->getEvents(), function($event) use($startsWithin, $time) {
+		return array_filter($this->getEvents(), function ($event) use ($startsWithin, $time) {
 			return $event->isStartingWithin($startsWithin, $time);
 		});
 	}
