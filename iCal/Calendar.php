@@ -26,32 +26,19 @@ class Calendar extends Component {
 
 		foreach ($lines as $rawline) {
 			foreach (explode('\n', $rawline) as $line) {
+				$lineSegments = $this->parseLine($line);
 
-				$line = trim($line);
-				$add = $this->keyValueFromString($line);
-				if ($add === false) {
+				if(is_array($lineSegments))
+					list($keyword, $attributes, $value) = $lineSegments;
+				else {
 					if (!isset($keyword))
 						return false;
 
-					if (isset($current))
-						$current->appendProperty($keyword, $line);
+					if(isset($current))
+						$current->appendProperty($keyword, $lineSegments);
 
 					continue;
 				}
-
-				$value = $add[1];
-
-				$raw = explode(';', $add[0]);
-				$keyword = array_shift($raw);
-
-				$attributes = array();
-				foreach ($raw as $rawAttribute) {
-					$attribute = explode('=', $rawAttribute, 2);
-					$attributes[$attribute[0]] = isset($attribute[1]) ? trim($attribute[1]) : true;
-				}
-
-				$keyword = trim($keyword);
-				$value = trim($value);
 
 				switch ($keyword) {
 					case "BEGIN":
@@ -119,6 +106,30 @@ class Calendar extends Component {
 				}
 			}
 		}
+	}
+
+	private function parseLine($line) {
+		$line = trim($line);
+		$add = $this->keyValueFromString($line);
+
+		if ($add === false)
+			return $line;
+
+		$value = $add[1];
+
+		$raw = explode(';', $add[0]);
+		$keyword = array_shift($raw);
+
+		$attributes = array();
+		foreach ($raw as $rawAttribute) {
+			$attribute = explode('=', $rawAttribute, 2);
+			$attributes[$attribute[0]] = isset($attribute[1]) ? trim($attribute[1]) : true;
+		}
+
+		$keyword = trim($keyword);
+		$value = trim($value);
+
+		return [ $keyword, $attributes, $value ];
 	}
 
 	private function keyValueFromString($text) {
