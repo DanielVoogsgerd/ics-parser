@@ -187,14 +187,14 @@ class Calendar extends Component {
 	}
 
 	public function getEventsFromRange(\DateTime $rangeStart = null, \DateTime $rangeEnd = null) {
-		return array_filter($this->events(), function ($event) use ($rangeStart, $rangeEnd) {
+		return array_filter($this->getEvents(), function (Event $event) use ($rangeStart, $rangeEnd) {
 			return ($rangeStart === null || $rangeStart <= $event->getStart()) &&
 			       ($rangeEnd === null || $rangeEnd >= $event->getStart());
 		});
 	}
 
 	public function sortEvents($order = SORT_ASC) {
-		usort($this->events, function ($event1, $event2) use ($order) {
+		usort($this->events, function (Event $event1, Event $event2) use ($order) {
 			if ($event1->getStart() === $event2->getStart())
 				return 0;
 
@@ -206,13 +206,13 @@ class Calendar extends Component {
 	}
 
 	public function getOngoingEvents(\DateTime $time = null) {
-		return array_filter($this->getEvents(), function ($event) use ($time) {
+		return array_filter($this->getEvents(), function (Event $event) use ($time) {
 			return $event->isOngoing($time);
 		});
 	}
 
 	public function getEventsStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
-		return array_filter($this->getEvents(), function ($event) use ($startsWithin, $time) {
+		return array_filter($this->getEvents(), function (Event $event) use ($startsWithin, $time) {
 			return $event->isStartingWithin($startsWithin, $time);
 		});
 	}
