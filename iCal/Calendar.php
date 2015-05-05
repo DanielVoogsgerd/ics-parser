@@ -203,7 +203,7 @@ class Calendar extends Component {
 		});
 	}
 
-	public function startsWithin(DateInterval $startsWithin, \DateTime $time = null) {
+	public function startsWithin(\DateInterval $startsWithin, \DateTime $time = null) {
 		return array_filter($this->events(), function($event) use($startsWithin, $time) {
 			return $event->startsWithin($startsWithin, $time);
 		});
