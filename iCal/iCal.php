@@ -8,12 +8,9 @@ require 'iCalComponent.php';
 require 'iCalEvent.php';
 require 'iCalTodo.php';
 
-class iCal {
+class iCal extends iCalComponent {
 	private $events = array();
 	private $todos = array();
-
-	private $properties = array();
-
 
 	public function __construct($filename) {
 		if (!$filename)
@@ -124,14 +121,14 @@ class iCal {
 		}
 	}
 
-	public function keyValueFromString($text) {
+	private function keyValueFromString($text) {
 		if (!preg_match("/([^:]+)[:]([\w\W]*)/", $text, $matches))
 			return false;
 
 		return array_slice($matches, 1, 2);
 	}
 
-	public function iCalDateToDateTime($icalDate, $timezone = null) {
+	private function iCalDateToDateTime($icalDate, $timezone = null) {
 		$pattern = '/([0-9]{4})';    // 1: YYYY
 		$pattern .= '([0-9]{2})';    // 2: MM
 		$pattern .= '([0-9]{2})';    // 3: DD
@@ -184,7 +181,7 @@ class iCal {
 	public function eventsFromRange(\DateTime $rangeStart = null, \DateTime $rangeEnd = null) {
 		return array_filter($this->events(), function ($event) use ($rangeStart, $rangeEnd) {
 			return ($rangeStart === null || $rangeStart <= $event->getStart()) &&
-			($rangeEnd === null || $rangeEnd >= $event->getStart());
+			       ($rangeEnd === null || $rangeEnd >= $event->getStart());
 		});
 	}
 
@@ -198,18 +195,6 @@ class iCal {
 			else
 				return ($event1->getStart() < $event2->getStart()) ? 1 : -1;
 		});
-	}
-
-	public function setProperty($key, $value) {
-		$this->properties[$key] = $value;
-	}
-
-	public function appendProperty($key, $value) {
-		$this->properties[$key] .= $value;
-	}
-
-	public function getProperty($key) {
-		return isset($this->properties[$key]) ? $this->properties[$key] : null;
 	}
 
 	public function isOngoing(\DateTime $time = null) {
