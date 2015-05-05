@@ -1,4 +1,6 @@
 <?php
+require 'class.iCalEvent.php';
+require 'class.iCalTodo.php';
 class ICal {
 	private $events = array();
 	private $todos = array();
