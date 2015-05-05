@@ -67,7 +67,7 @@ class Todo extends Component {
 		return $this->getStart() <= $time && $this->getDue() >= $time;
 	}
 
-	public function startsWithin(\DateInterval $startsWithin, \DateTime $time = null) {
+	public function isStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');
 

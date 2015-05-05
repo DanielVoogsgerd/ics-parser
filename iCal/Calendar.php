@@ -153,7 +153,7 @@ class Calendar extends Component {
 		return \DateTimeImmutable::createFromFormat('Ymd\THis', $icalDate, new \DateTimeZone($timezone));
 	}
 
-	public function todos() {
+	public function getTodos() {
 		return $this->todos;
 	}
 
@@ -162,11 +162,11 @@ class Calendar extends Component {
 	}
 
 	public function getTodoCount() {
-		return count($this->todos);
+		return count($this->getTodos());
 	}
 
 
-	public function events() {
+	public function getEvents() {
 		return $this->events;
 	}
 
@@ -175,10 +175,10 @@ class Calendar extends Component {
 	}
 
 	public function getEventCount() {
-		return count($this->events);
+		return count($this->getEvents());
 	}
 
-	public function eventsFromRange(\DateTime $rangeStart = null, \DateTime $rangeEnd = null) {
+	public function getEventsFromRange(\DateTime $rangeStart = null, \DateTime $rangeEnd = null) {
 		return array_filter($this->events(), function ($event) use ($rangeStart, $rangeEnd) {
 			return ($rangeStart === null || $rangeStart <= $event->getStart()) &&
 			       ($rangeEnd === null || $rangeEnd >= $event->getStart());
@@ -197,15 +197,15 @@ class Calendar extends Component {
 		});
 	}
 
-	public function isOngoing(\DateTime $time = null) {
-		return array_filter($this->events(), function($event) use($time) {
+	public function getOngoingEvents(\DateTime $time = null) {
+		return array_filter($this->getEvents(), function($event) use($time) {
 			return $event->isOngoing($time);
 		});
 	}
 
-	public function startsWithin(\DateInterval $startsWithin, \DateTime $time = null) {
-		return array_filter($this->events(), function($event) use($startsWithin, $time) {
-			return $event->startsWithin($startsWithin, $time);
+	public function getEventsStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
+		return array_filter($this->getEvents(), function($event) use($startsWithin, $time) {
+			return $event->isStartingWithin($startsWithin, $time);
 		});
 	}
 }

@@ -58,11 +58,9 @@ class Event extends Component {
 		return $this->getStart() <= $time && $this->getEnd() >= $time;
 	}
 
-	public function startsWithin(\DateInterval $startsWithin, \DateTime $time = null) {
+	public function isStartingWithin(\DateInterval $startsWithin, \DateTime $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');
-
-		//var_dump($time, $this->getStart()->sub($startsWithin), $this->getStart(), $startsWithin);
 
 		return $this->getStart()->sub($startsWithin) <= $time && $this->getStart() >= $time;
 	}
