@@ -45,11 +45,11 @@ class Todo extends Component {
 
 	// Alias for due
 	public function getEnd() {
-		return $this->due;
+		return $this->getDue();
 	}
 
 	public function setEnd($due) {
-		$this->due = $due;
+		$this->setDue($due);
 	}
 
 	public function getLocation() {
