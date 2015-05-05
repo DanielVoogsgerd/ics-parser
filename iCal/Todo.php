@@ -16,7 +16,7 @@ class Todo extends Component {
 		$this->due = $due;
 		$this->location = $location;
 
-		$this->extraProperties = $extraProperties;
+		parent::__construct($extraProperties);
 	}
 
 	public function getSummary() {
