@@ -4,10 +4,10 @@
  * License: GNU GPLv2
  */
 
-use iCal\iCal;
+use iCal\Calendar;
 
-require 'iCal/iCal.php';
-$cal = new iCal('ical.ics');
+require 'iCal/Calendar.php';
+$cal = new Calendar('ical.ics');
 
 $cal->sortEvents();
 

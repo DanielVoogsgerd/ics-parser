@@ -4,11 +4,11 @@
  * License: GNU GPLv2
  */
 
-require 'iCalComponent.php';
-require 'iCalEvent.php';
-require 'iCalTodo.php';
+require_once 'Component.php';
+require_once 'Event.php';
+require_once 'Todo.php';
 
-class iCal extends iCalComponent {
+class Calendar extends Component {
 	private $events = array();
 	private $todos = array();
 
@@ -57,12 +57,12 @@ class iCal extends iCalComponent {
 					case "BEGIN":
 						switch ($value) {
 							case "VTODO":
-								$current = new iCalTodo();
+								$current = new Todo();
 								$this->todos[] = $current;
 								break;
 
 							case "VEVENT":
-								$current = new iCalEvent();
+								$current = new Event();
 								$this->events[] = $current;
 								break;
 

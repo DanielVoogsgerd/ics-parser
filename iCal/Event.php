@@ -4,7 +4,7 @@
  * License: GNU GPLv2
  */
 
-class iCalEvent extends iCalComponent {
+class Event extends Component {
 	private $start;
 	private $end;
 	private $summary;

@@ -4,7 +4,7 @@
  * License: GNU GPLv2
  */
 
-class iCalTodo extends iCalComponent {
+class Todo extends Component {
 	private $summary;
 	private $start;
 	private $due;

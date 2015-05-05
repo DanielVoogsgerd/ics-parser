@@ -4,7 +4,7 @@
  * License: GNU GPLv2
  */
 
-abstract class iCalComponent {
+abstract class Component {
 	protected $extraProperties;
 
 	protected function __construct($extraProperties) {
