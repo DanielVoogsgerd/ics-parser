@@ -15,15 +15,15 @@ class Calendar extends Component {
 
 	public function __construct($filename) {
 		if (!$filename)
-			throw new InvalidArgumentException('No filename provided');
+			throw new \InvalidArgumentException('No filename provided');
 
 		if (!file_exists($filename))
-			throw new InvalidArgumentException('Provided file doensn\'t exist');
+			throw new \InvalidArgumentException('Provided file doensn\'t exist');
 
 		$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 		if (stristr($lines[0], 'BEGIN:VCALENDAR') === false)
-			throw new Exception('Content doensn\'t look like iCal to me');
+			throw new \Exception('Content doensn\'t look like iCal to me');
 
 		foreach ($lines as $rawline) {
 			foreach (explode('\n', $rawline) as $line) {
@@ -33,7 +33,7 @@ class Calendar extends Component {
 					list($keyword, $attributes, $value) = $lineSegments;
 				else {
 					if (!isset($keyword))
-						return false;
+						throw new \Exception('Content doensn\'t look like iCal to me');
 
 					if (isset($current))
 						$current->appendProperty($keyword, $lineSegments);
@@ -151,15 +151,11 @@ class Calendar extends Component {
 		$pattern .= '(Z?)/';         // 7: Timezone
 
 		if (!preg_match($pattern, $icalDate, $date)) {
-			trigger_error('Date supplied is not a valid ical date');
-
-			return false;
+			throw new \InvalidArgumentException('Date supplied is not a valid ical date');
 		}
 
 		if ($date[7] !== "Z" && is_null($timezone) && $this->getProperty('TZID')) {
-			trigger_error('No timezone was supplied');
-
-			return false;
+			throw new \Exception('No timezone was supplied');
 		}
 
 		return \DateTimeImmutable::createFromFormat('Ymd\THis', $icalDate, new \DateTimeZone($timezone));
