@@ -4,7 +4,7 @@
  * License: GNU GPLv2
  */
 
-class Todo extends Component {
+class Todo extends TimeComponent {
 	private $summary;
 	private $start;
 	private $due;
@@ -19,29 +19,10 @@ class Todo extends Component {
 		parent::__construct($extraProperties);
 	}
 
-	public function getSummary() {
-		return $this->summary;
-	}
-
-	public function setSummary($summary) {
-		$this->summary = $summary;
-	}
-
-	public function getStart() {
-		return $this->start;
-	}
-
-	public function setStart(\DateTimeImmutable $start) {
-		$this->start = $start;
-	}
-
-	public function getDue() {
-		return $this->due;
-	}
-
-	public function setDue(\DateTimeImmutable $due) {
-		$this->due = $due;
-	}
+	use Properties\Summary;
+	use Properties\Start;
+	use Properties\Due;
+	use Properties\Location;
 
 	// Alias for due
 	public function getEnd() {
@@ -50,27 +31,5 @@ class Todo extends Component {
 
 	public function setEnd($due) {
 		$this->setDue($due);
-	}
-
-	public function getLocation() {
-		return $this->location;
-	}
-
-	public function setLocation($location) {
-		$this->location = $location;
-	}
-
-	public function isOngoing(\DateTimeInterface $time = null) {
-		if ($time === null)
-			$time = new \DateTime('Now');
-
-		return $this->getStart() <= $time && $this->getDue() >= $time;
-	}
-
-	public function isStartingWithin(\DateInterval $startsWithin, \DateTimeInterface $time = null) {
-		if ($time === null)
-			$time = new \DateTime('Now');
-
-		return $this->getStart()->sub($startsWithin) <= $time && $this->getStart() <= $time;
 	}
 }

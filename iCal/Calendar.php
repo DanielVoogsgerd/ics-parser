@@ -4,8 +4,14 @@
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
  */
+require_once 'Properties/Summary.php';
+require_once 'Properties/Start.php';
+require_once 'Properties/End.php';
+require_once 'Properties/Due.php';
+require_once 'Properties/Location.php';
 
 require_once 'Component.php';
+require_once 'TimeComponent.php';
 require_once 'Event.php';
 require_once 'Todo.php';
 
