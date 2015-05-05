@@ -1,8 +1,9 @@
 <?php
 /**
  * Author: Daniel Voogsgerd
- * All rights reserved
+ * License: GNU GPLv2
  */
+
 require 'class.iCalReader.php';
 
 $cal = new iCal('ical.ics');

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Author: Daniel Voogsgerd
+ * License: GNU GPLv2
+ */
+
 require 'class.iCalEvent.php';
 require 'class.iCalTodo.php';
 class ICal {

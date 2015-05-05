@@ -1,7 +1,7 @@
 <?php
 /**
  * Author: Daniel Voogsgerd
- * All rights reserved
+ * License: GNU GPLv2
  */
 
 class iCalEvent {
