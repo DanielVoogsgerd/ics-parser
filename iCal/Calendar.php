@@ -13,7 +13,12 @@ class Calendar extends Component {
 
 	use Properties\Timezone;
 
-	public function __construct($filename) {
+	public function __construct($filename = null) {
+		if ($filename !== null)
+			$this->parseICS($filename);
+	}
+
+	public function parseICS($filename) {
 		if (!$filename)
 			throw new \InvalidArgumentException('No filename provided');
 
