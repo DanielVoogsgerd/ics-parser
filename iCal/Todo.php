@@ -11,10 +11,17 @@ class Todo extends TimeComponent {
 	use Properties\Location;
 
 	public function __construct($summary = null, \DateTimeImmutable $start = null, \DateTimeImmutable $due = null, $location = null, $extraProperties = array()) {
-		$this->summary = $summary;
-		$this->start = $start;
-		$this->due = $due;
-		$this->location = $location;
+		if ($summary !== null)
+			$this->setSummary($summary);
+
+		if ($start !== null)
+			$this->setStart($start);
+
+		if ($due !== null)
+			$this->setDue($due);
+
+		if ($location !== null)
+			$this->setLocation($location);
 
 		parent::__construct($extraProperties);
 	}

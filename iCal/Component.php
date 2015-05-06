@@ -5,7 +5,7 @@
  */
 
 abstract class Component {
-	protected $extraProperties;
+	private $extraProperties;
 
 	protected function __construct($extraProperties) {
 		$this->extraProperties = $extraProperties;

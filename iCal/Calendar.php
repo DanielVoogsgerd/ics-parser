@@ -1,23 +1,17 @@
 <?php namespace iCal;
-
 /**
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
  */
-require_once 'Properties/Summary.php';
-require_once 'Properties/Start.php';
-require_once 'Properties/End.php';
-require_once 'Properties/Due.php';
-require_once 'Properties/Location.php';
-
-require_once 'Component.php';
-require_once 'TimeComponent.php';
-require_once 'Event.php';
-require_once 'Todo.php';
 
 class Calendar extends Component {
 	private $events = array();
 	private $todos = array();
+	private $journals = array();
+	private $freebusys = array();
+	private $alarms = array();
+
+	use Properties\Timezone;
 
 	public function __construct($filename) {
 		if (!$filename)
@@ -57,14 +51,28 @@ class Calendar extends Component {
 
 							case "VEVENT":
 								$current = new Event();
-								$this->events[] = $current;
+								$this->addEvent($current);
 								break;
 
 							case "VTIMEZONE":
+								$current = new Timezone();
+								$this->setTimezone($current);
 								break;
+
+							case "VFREEBUSY":
+								$current = new FreeBusy();
+								$this->addFreebusy($current);
+								break;
+
+							case "VALARM":
+								$current = new Alarm();
+								$this->addAlarm($current);
+								break;
+
 							case "VCALENDAR":
 								$current = $this;
 								break;
+
 							case "DAYLIGHT":
 							case "STANDARD":
 								//Recursive behaviour
@@ -94,10 +102,17 @@ class Calendar extends Component {
 							$current->setLocation($value);
 						break;
 
+					case 'TZID':
+						$current->setTimezone($value);
+						break;
+
 					case "END":
 						if (in_array($value, [
-							'VTODO',
 							'VEVENT',
+							'VTODO',
+							'VJOURNAL',
+							'VFREEBUSY',
+							'VALARM',
 							'VCALENDAR',
 							'DAYLIGHT',
 							'VTIMEZONE',
@@ -167,6 +182,12 @@ class Calendar extends Component {
 		return \DateTimeImmutable::createFromFormat('Ymd\THis', $icalDate, new \DateTimeZone($timezone));
 	}
 
+	
+	// Todos
+	public function addTodo(Todo $todo) {
+		$this->todos[] = $todo;
+	}
+
 	public function getTodos() {
 		return $this->todos;
 	}
@@ -179,6 +200,10 @@ class Calendar extends Component {
 		return count($this->getTodos());
 	}
 
+	// Events
+	public function addEvent(Event $event) {
+	    $this->events[] = $event;
+	}
 
 	public function getEvents() {
 		return $this->events;
@@ -192,6 +217,58 @@ class Calendar extends Component {
 		return count($this->getEvents());
 	}
 
+	// Journals
+	public function addJournal(Journal $journal) {
+	    $this->journals[] = $journal;
+	}
+
+	public function getJournals() {
+		return $this->events;
+	}
+
+	public function hasJournals() {
+		return $this->getJournalCount() > 0;
+	}
+
+	public function getJournalCount() {
+		return count($this->getJournals());
+	}
+
+	// Freebusys
+	public function addFreeBusy(FreeBusy $freebusy) {
+		$this->freebusys[] = $freebusy;
+	}
+
+	public function getFreeBusys() {
+		return $this->freebusys;
+	}
+
+	public function hasFreeBusys() {
+		return $this->getFreeBusyCount() > 0;
+	}
+
+	public function getFreeBusyCount() {
+		return count($this->getFreeBusys());
+	}
+
+	// Freebusys
+	public function addAlarm(Alarm $alarm) {
+		$this->alarms[] = $alarm;
+	}
+
+	public function getAlarms() {
+		return $this->alarms;
+	}
+
+	public function hasAlarms() {
+		return $this->getAlarmCount() > 0;
+	}
+
+	public function getAlarmCount() {
+		return count($this->getAlarms());
+	}
+
+
 	public function getEventsFromRange(\DateTimeInterface $rangeStart = null, \DateTimeInterface $rangeEnd = null) {
 		return array_filter($this->getEvents(), function (Event $event) use ($rangeStart, $rangeEnd) {
 			return ($rangeStart === null || $rangeStart <= $event->getStart()) &&
@@ -201,7 +278,7 @@ class Calendar extends Component {
 
 	public function sortEvents($order = SORT_ASC) {
 		usort($this->events, function (Event $event1, Event $event2) use ($order) {
-			if ($event1->getStart() === $event2->getStart())
+			if ($event1->getStart() == $event2->getStart())
 				return 0;
 
 			if ($order === SORT_ASC)

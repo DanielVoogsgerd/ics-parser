@@ -11,10 +11,17 @@ class Event extends TimeComponent {
 	use Properties\Location;
 
 	public function __construct($summary = null, \DateTimeImmutable $start = null, \DateTimeImmutable $end = null, $location = null, $extraProperties = array()) {
-		$this->summary = $summary;
-		$this->start = $start;
-		$this->end = $end;
-		$this->location = $location;
+		if ($summary !== null)
+			$this->setSummary($summary);
+
+		if ($start !== null)
+			$this->setStart($start);
+
+		if ($end !== null)
+			$this->setEnd($end);
+
+		if ($location !== null)
+			$this->setLocation($location);
 
 		parent::__construct($extraProperties);
 	}
