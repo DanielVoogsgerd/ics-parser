@@ -5,6 +5,8 @@
  */
 
 trait Due {
+	private $due;
+	
 	public function getDue() {
 		return $this->due;
 	}

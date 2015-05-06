@@ -5,6 +5,8 @@
  */
 
 trait Location {
+	private $location;
+
 	public function getLocation() {
 		return $this->location;
 	}

@@ -5,6 +5,8 @@
  */
 
 trait Start {
+	private $start;
+
 	public function getStart() {
 		return $this->start;
 	}

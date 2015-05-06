@@ -5,6 +5,9 @@
  */
 
 abstract class TimeComponent extends Component {
+	abstract public function getStart();
+	abstract public function getEnd();
+
 	public function isOngoing(\DateTimeInterface $time = null) {
 		if ($time === null)
 			$time = new \DateTime('Now');

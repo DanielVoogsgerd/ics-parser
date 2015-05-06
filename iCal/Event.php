@@ -5,10 +5,10 @@
  */
 
 class Event extends TimeComponent {
-	private $start;
-	private $end;
-	private $summary;
-	private $location;
+	use Properties\Summary;
+	use Properties\Start;
+	use Properties\End;
+	use Properties\Location;
 
 	public function __construct($summary = null, \DateTimeImmutable $start = null, \DateTimeImmutable $end = null, $location = null, $extraProperties = array()) {
 		$this->summary = $summary;
@@ -18,9 +18,4 @@ class Event extends TimeComponent {
 
 		parent::__construct($extraProperties);
 	}
-
-	use Properties\Summary;
-	use Properties\Start;
-	use Properties\End;
-	use Properties\Location;
 }

@@ -5,6 +5,8 @@
  */
 
 trait Summary {
+	private $summary;
+
 	public function getSummary() {
 		return $this->summary;
 	}

@@ -5,6 +5,8 @@
  */
 
 trait End {
+	private $end;
+
 	public function getEnd() {
 		return $this->end;
 	}
