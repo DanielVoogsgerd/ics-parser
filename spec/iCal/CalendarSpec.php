@@ -4,6 +4,8 @@ namespace spec\iCal;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use \iCal\Event;
+
 
 class CalendarSpec extends ObjectBehavior
 {
@@ -16,7 +18,10 @@ class CalendarSpec extends ObjectBehavior
 		$this->shouldHaveType('iCal\Calendar');
     }
 
-	function it_can_add_events (\iCal\Event $event)
+	/**
+	 * Events
+	 */
+	function it_can_add_events (Event $event)
 	{
 		$this->addEvent($event);
 		$this->getEvents()->shouldHaveCount(1);
@@ -25,7 +30,17 @@ class CalendarSpec extends ObjectBehavior
 		$this->getEvents()->shouldHaveCount(2);
 	}
 
-	function it_can_count_events(\iCal\Event $event)
+	function it_can_get_events(Event $event) {
+		$this->getEvents()->shouldHaveCount(0);
+		$this->getEvents()->shouldBeArray();
+
+		$this->addEvent($event);
+		$this->getEvents()->shouldHaveCount(1);
+		$this->getEvents()->shouldBeArray();
+
+	}
+
+	function it_can_count_events(Event $event)
 	{
 		$this->getEventCount()->shouldBeInt();
 		$this->getEventCount()->shouldBe(0);
@@ -35,7 +50,7 @@ class CalendarSpec extends ObjectBehavior
 		$this->getEventCount()->shouldBe(1);
 	}
 
-	function it_can_detect_events(\iCal\Event $event)
+	function it_can_detect_events(Event $event)
 	{
 		$this->hasEvents()->shouldReturn(false);
 		$this->hasEvents()->shouldBeBoolean();
