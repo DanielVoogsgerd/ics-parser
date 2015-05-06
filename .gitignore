@@ -1,3 +1,4 @@
 *.ics
 vendor/
-vendor/autoload.php
+bin/
+*.lock
