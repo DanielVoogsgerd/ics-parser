@@ -228,7 +228,7 @@ class Calendar extends Component {
 	}
 
 	public function getJournals() {
-		return $this->events;
+		return $this->journals;
 	}
 
 	public function hasJournals() {
