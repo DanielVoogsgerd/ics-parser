@@ -9,12 +9,22 @@ use \iCal\Event;
 use \iCal\Journal;
 use \iCal\FreeBusy;
 use \iCal\Alarm;
+use \iCal\Timezone;
 
 
 class CalendarSpec extends ObjectBehavior
 {
-	public function let() {
-		$this->beConstructedWith();
+	private $yesterday;
+	private $today;
+	private $tomorrow;
+	private $now;
+
+	function let()
+	{
+		$this->yesterday = new \DateTimeImmutable('yesterday');
+		$this->today     = new \DateTimeImmutable('today');
+		$this->tomorrow  = new \DateTimeImmutable('tomorrow');
+		$this->tomorrow  = new \DateTimeImmutable('now');
 	}
 
 	function it_is_initializable()
@@ -105,6 +115,54 @@ class CalendarSpec extends ObjectBehavior
 		$this->hasEvents()->shouldReturn(true);
 		$this->hasEvents()->shouldBeBoolean();
 	}
+
+	function it_can_list_events_from_range()
+	{
+		$event1 = new Event(null, $this->yesterday, $this->tomorrow);
+		$event2 = new Event(null, $this->today, $this->tomorrow);
+		$event3 = new Event(null, $this->tomorrow, $this->tomorrow);
+
+		$this->addEvent($event1);
+		$this->addEvent($event2);
+		$this->addEvent($event3);
+
+		$result = $this->getEventsFromRange($this->yesterday, $this->tomorrow);
+
+		$result->shouldHaveCount(3);
+
+	}
+
+	function it_can_list_ongoing_events()
+	{
+		$event1 = new Event(null, $this->yesterday, $this->today);
+		$event2 = new Event(null, $this->yesterday, $this->tomorrow);
+		$event3 = new Event(null, $this->today, $this->tomorrow);
+
+		$this->addEvent($event1);
+		$this->addEvent($event2);
+		$this->addEvent($event3);
+
+		$result = $this->getOngoingEvents($this->now);
+	}
+// TODO: Fix Event sort test
+//	function it_can_sort_events()
+//	{
+//		$event1 = new Event(null, $this->yesterday, $this->today);
+//		$event2 = new Event(null, $this->yesterday, $this->tomorrow);
+//		$event3 = new Event(null, $this->today, $this->tomorrow);
+//
+//		$this->addEvent($event1);
+//		$this->addEvent($event3);
+//		$this->addEvent($event2);
+//
+//		$this->sortEvents();
+//
+//		$result = $this->getEvents();
+//
+//		$result->shouldHaveKeyWithValue(0, $event1);
+//		$result->shouldHaveKeyWithValue(1, $event1);
+//		$result->shouldHaveKeyWithValue(1, $event2);
+//	}
 
 	/**
 	 * Journals
@@ -236,6 +294,19 @@ class CalendarSpec extends ObjectBehavior
 		$this->addAlarm($alarm);
 		$this->hasAlarms()->shouldReturn(true);
 		$this->hasAlarms()->shouldBeBoolean();
+	}
+
+	function it_can_set_timezone(Timezone $timezone)
+	{
+		$this->setTimezone($timezone);
+	}
+
+	function it_can_get_timezone(Timezone $timezone)
+	{
+		$this->setTimezone($timezone);
+		$result = $this->getTimezone();
+		$result->shouldHaveType('\iCal\Timezone');
+		$result->shouldBe($timezone);
 	}
 
 }

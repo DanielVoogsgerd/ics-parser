@@ -31,7 +31,7 @@ class Todo extends TimeComponent {
 		return $this->getDue();
 	}
 
-	public function setEnd($due) {
+	public function setEnd(\DateTimeImmutable $due) {
 		$this->setDue($due);
 	}
 }
