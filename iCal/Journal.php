@@ -8,7 +8,7 @@ class Journal extends Component {
 	use Properties\Summary;
 	use Properties\Start;
 
-	public function __construct($summary = null, \DateTimeImmutable $start = null, $extraProperties) {
+	public function __construct($summary = null, \DateTimeImmutable $start = null, $extraProperties = array()) {
 		if ($summary !== null)
 			$this->setSummary($summary);
 
