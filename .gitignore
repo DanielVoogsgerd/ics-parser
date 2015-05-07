@@ -1,4 +1,5 @@
 *.ics
 vendor/
 bin/
+node_modules
 *.lock
