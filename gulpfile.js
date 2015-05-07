@@ -11,5 +11,5 @@ gulp.task('watch', function () {
 });
 
 gulp.task('test', function() {
-    gulp.src('phpspec.yml').pipe(phpspec('./bin/phpspec run'));
+    gulp.src('phpspec.yml').pipe(phpspec('./vendor/bin/phpspec run'));
 });
