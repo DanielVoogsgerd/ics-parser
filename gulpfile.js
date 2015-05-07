@@ -5,7 +5,7 @@ var watch   = require('gulp-watch');
 gulp.task('default', ['phpspec']);
 
 gulp.task('watch', function () {
-    gulp.watch('iCal/**/*.php', function(){
+    gulp.watch(['iCal/**/*.php', 'spec/**/*.php'], function(){
         gulp.run('test');
     });
 });
