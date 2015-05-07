@@ -23,7 +23,7 @@ class CalendarSpec extends ObjectBehavior
     }
 
 	/**
-	 * Todo
+	 * Todos
 	 */
 	function it_can_add_todos(Todo $todo)
 	{
