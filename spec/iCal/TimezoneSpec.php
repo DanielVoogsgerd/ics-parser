@@ -17,9 +17,4 @@ class TimezoneSpec extends ObjectBehavior
 		$this->beConstructedWith(new \DateTimeZone('Europe/Amsterdam'));
 		$this->shouldHaveType('iCal\Timezone');
 	}
-
-	function it_throws_when_invalid_timezone()
-	{
-		$this->shouldThrow('\Exception')->during('setTimezone', new \DateTimeZone('Mars'));
-	}
 }
