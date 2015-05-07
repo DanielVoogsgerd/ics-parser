@@ -11,7 +11,7 @@ class Calendar extends Component {
 	private $freebusys = array();
 	private $alarms = array();
 
-	use Properties\Timezone;
+	use CalendarTimezone;
 
 	public function __construct($filename = null) {
 		if ($filename !== null)
@@ -108,7 +108,7 @@ class Calendar extends Component {
 						break;
 
 					case 'TZID':
-						$current->setTimezone($value);
+						$current->setTimezone(new \DateTimeZone($value));
 						break;
 
 					case "END":

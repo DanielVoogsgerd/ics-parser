@@ -1,13 +1,13 @@
-<?php namespace iCal\Properties;
+<?php namespace iCal;
 /**
  * Author: Daniel Voogsgerd
  * License: GNU GPLv2
  */
 
-trait Timezone {
+trait CalendarTimezone {
 	private $timezone;
 
-	public function setTimezone(\DateTimeZone $timezone) {
+	public function setTimezone(Timezone $timezone) {
 		$this->timezone = $timezone;
 	}
 
