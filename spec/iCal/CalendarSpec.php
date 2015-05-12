@@ -144,7 +144,8 @@ class CalendarSpec extends ObjectBehavior
 
 		$result = $this->getOngoingEvents($this->now);
 	}
-// TODO: Fix Event sort test
+
+//	TODO: Fix Event sort test
 //	function it_can_sort_events()
 //	{
 //		$event1 = new Event(null, $this->yesterday, $this->today);
